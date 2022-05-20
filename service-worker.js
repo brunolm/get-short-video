@@ -5,13 +5,13 @@ self.context = {
     "development": false,
     "production": true,
     "mode": "ssg",
-    "key": "38df35c6b01245610e2b4c2559f74b733723a037",
+    "key": "c926c22c326303ef392c7e7aa27e01f98400d05d",
     "name": ""
   },
   "project": {
-    "domain": "brunolm.com",
-    "name": "BrunoLM",
-    "color": "#D22365",
+    "domain": "getshortvideo.com",
+    "name": "Get a Short Video",
+    "color": "#333333",
     "viewport": "width=device-width, initial-scale=1, shrink-to-fit=no",
     "type": "website",
     "display": "standalone",
