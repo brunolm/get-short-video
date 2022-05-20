@@ -512,8 +512,8 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-bottom: 0.5rem;
 }
 
-.mt-32 {
-  margin-top: 8rem;
+.mt-0 {
+  margin-top: 0px;
 }
 
 .mt-12 {
@@ -524,10 +524,6 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-bottom: 0.5rem;
 }
 
-.mt-0 {
-  margin-top: 0px;
-}
-
 .flex {
   display: flex;
 }
@@ -536,12 +532,8 @@ Ensure the default browser behavior of the `hidden` attribute.
   display: grid;
 }
 
-.h-1\/2 {
-  height: 50%;
-}
-
-.h-screen {
-  height: 100vh;
+.h-16 {
+  height: 4rem;
 }
 
 .w-full {
@@ -550,10 +542,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .flex-1 {
   flex: 1 1 0%;
-}
-
-.grid-cols-2 {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .grid-cols-1 {
@@ -663,10 +651,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 
 @media (min-width: 768px) {
-  .md\:mt-0 {
-    margin-top: 0px;
-  }
-
   .md\:w-1\/5 {
     width: 20%;
   }
