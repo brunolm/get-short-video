@@ -17,3 +17,11 @@ body {
 main {
   min-height: 100vh;
 }
+
+main article {
+  min-height: 100vh;
+}
+
+video {
+  max-height: 60vh;
+}

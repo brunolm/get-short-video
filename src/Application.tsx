@@ -26,7 +26,7 @@ class Application extends Nullstack {
         <Head />
 
         <main class="dark dark:bg-gray-800 dark:text-gray-200">
-          <div class="container mx-auto px-4 mt-32 md:mt-0">
+          <div class="container mx-auto px-4 mt-0">
             <Home route="/" />
           </div>
         </main>

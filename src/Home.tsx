@@ -121,7 +121,7 @@ export class Home extends Nullstack<Props> {
       <div class="flex flex-col gap-2 mt-12 sm:mt-4">
         <h2>Past recordings</h2>
 
-        <div class="grid-cols-2 md:grid-cols-3 grid gap-4">
+        <div class="grid-cols-1 sm:grid-cols-2 md:grid-cols-3 grid gap-4">
           {this._recordings?.map((rec) => (
             <div class="flex flex-col gap-2 items-center w-full">
               <video src={rec.url} controls />
