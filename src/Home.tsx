@@ -13,8 +13,8 @@ export class Home extends Nullstack<Props> {
   _dataChunks: Blob[] = []
   _recordings: Array<{ date: DateTime; url: string }> = []
 
-  _mic: string
-  _webcam: string
+  mic: string
+  webcam: string
 
   recordingState = false
 
@@ -25,8 +25,8 @@ export class Home extends Nullstack<Props> {
 
   async hydrate() {
     this._devices = await navigator.mediaDevices.enumerateDevices()
-    this._mic = this._devices.find((device) => device.kind === 'audioinput')?.deviceId
-    this._webcam = this._devices.find((device) => device.kind === 'videoinput')?.deviceId
+    this.mic = this._devices.find((device) => device.kind === 'audioinput')?.deviceId
+    this.webcam = this._devices.find((device) => device.kind === 'videoinput')?.deviceId
 
     this.changeDevice()
   }
@@ -56,12 +56,16 @@ export class Home extends Nullstack<Props> {
 
   async changeDevice() {
     const stream = await navigator.mediaDevices.getUserMedia({
-      audio: {
-        deviceId: this._mic,
-      },
-      video: {
-        deviceId: this._webcam,
-      },
+      audio: !!this.mic
+        ? {
+            deviceId: this.mic,
+          }
+        : false,
+      video: !!this.webcam
+        ? {
+            deviceId: this.webcam,
+          }
+        : false,
     })
 
     const videoElement = document.querySelector<HTMLVideoElement>('#video')
@@ -99,9 +103,10 @@ export class Home extends Nullstack<Props> {
         <select
           class="dark:text-gray-200 dark:bg-gray-900 w-full p-2"
           onchange={this._selectDevice}
-          data-prop={`_${id}`}
-          value={this[`_${id}`]}
+          data-prop={`${id}`}
+          value={this[`${id}`]}
         >
+          <option value={''}>No device</option>
           {this._devices
             ?.filter((device) => device.kind === type)
             .map((device) => (
@@ -162,7 +167,7 @@ export class Home extends Nullstack<Props> {
 
             <div class="flex flex-col flex-1">
               <div id="video-container">
-                <video id="video" class="w-full" controls autoplay muted />
+                <video id="video" class={`w-full ${!!this.webcam ? '' : 'h-16'}`} controls autoplay muted />
               </div>
             </div>
           </div>
