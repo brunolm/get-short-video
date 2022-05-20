@@ -25,9 +25,9 @@ jobs:
 
       - name: Build
         env:
-          NULLSTACK_PROJECT_NAME: 'BrunoLM'
-          NULLSTACK_PROJECT_DOMAIN: 'brunolm.com'
-          NULLSTACK_PROJECT_COLOR: '#D22365'
+          NULLSTACK_PROJECT_NAME: 'Get a Short Video'
+          NULLSTACK_PROJECT_DOMAIN: 'getshortvideo.com'
+          NULLSTACK_PROJECT_COLOR: '#333333'
         run: yarn build --cache
 
       - name: Deploy 🚀
