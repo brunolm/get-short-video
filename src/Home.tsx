@@ -55,21 +55,27 @@ export class Home extends Nullstack<Props> {
   }
 
   async changeDevice() {
-    if (!this.mic && !this.webcam) {
+    if (this.mic === 'false' && this.webcam === 'false') {
       return
     }
 
     const stream = await navigator.mediaDevices.getUserMedia({
-      audio: !!this.mic
-        ? {
-            deviceId: this.mic,
-          }
-        : false,
-      video: !!this.webcam
-        ? {
-            deviceId: this.webcam,
-          }
-        : false,
+      audio:
+        this.mic !== 'false'
+          ? this.mic
+            ? {
+                deviceId: this.mic,
+              }
+            : true
+          : false,
+      video:
+        this.webcam !== 'false'
+          ? this.webcam
+            ? {
+                deviceId: this.webcam,
+              }
+            : true
+          : false,
     })
 
     const videoElement = document.querySelector<HTMLVideoElement>('#video')
@@ -110,7 +116,7 @@ export class Home extends Nullstack<Props> {
           data-prop={`${id}`}
           value={this[`${id}`]}
         >
-          <option value={''}>No device</option>
+          <option value={'false'}>No device</option>
           {this._devices
             ?.filter((device) => device.kind === type)
             .map((device) => (
