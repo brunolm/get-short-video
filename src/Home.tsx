@@ -151,42 +151,51 @@ export class Home extends Nullstack<Props> {
   render({ project }: Props) {
     return (
       <section class="Home">
-        <article class="py-8">
+        <article class="flex flex-col py-8">
           <h1 class="text-4xl mb-2">{project.name}</h1>
 
-          <div class="flex gap-4 flex-col md:flex-row items-start">
-            <div class="md:w-1/5">
-              <DeviceSelector id="mic" type="audioinput" />
-              <DeviceSelector id="webcam" type="videoinput" />
+          <div class="flex-1">
+            <div class="flex gap-4 flex-col md:flex-row items-start">
+              <div class="md:w-1/5">
+                <DeviceSelector id="mic" type="audioinput" />
+                <DeviceSelector id="webcam" type="videoinput" />
 
-              <div class="flex justify-center pt-4">
-                {!this.recordingState && (
-                  <button
-                    class="rounded-md dark:bg-blue-500 dark:text-white py-2 px-4"
-                    onclick={this.startRecording}
-                    disabled={this.mic === 'false' && this.webcam === 'false'}
-                  >
-                    Start recording
-                  </button>
-                )}
-                {this.recordingState && (
-                  <div class="flex flex-col justify-center gap-4">
-                    <button class="py-2 px-4 rounded-md dark:bg-red-400 dark:text-white" onclick={this.stopRecording}>
-                      Stop recording 🔴
+                <div class="flex justify-center pt-4">
+                  {!this.recordingState && (
+                    <button
+                      class="rounded-md dark:bg-blue-500 dark:text-white py-2 px-4"
+                      onclick={this.startRecording}
+                      disabled={this.mic === 'false' && this.webcam === 'false'}
+                    >
+                      Start recording
                     </button>
-                  </div>
-                )}
+                  )}
+                  {this.recordingState && (
+                    <div class="flex flex-col justify-center gap-4">
+                      <button class="py-2 px-4 rounded-md dark:bg-red-400 dark:text-white" onclick={this.stopRecording}>
+                        Stop recording 🔴
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div class="flex flex-col flex-1">
+                <div id="video-container">
+                  <video id="video" class={`w-full ${!!this.webcam ? '' : 'h-16'}`} controls autoplay muted />
+                </div>
               </div>
             </div>
 
-            <div class="flex flex-col flex-1">
-              <div id="video-container">
-                <video id="video" class={`w-full ${!!this.webcam ? '' : 'h-16'}`} controls autoplay muted />
-              </div>
-            </div>
+            <Recordings />
           </div>
 
-          <Recordings />
+          <div class="flex justify-center">
+            Made with ❤ by{' '}
+            <a href="https://ae.studio" class="pl-1 underline">
+              AE Studio
+            </a>
+          </div>
         </article>
       </section>
     )
