@@ -55,6 +55,10 @@ export class Home extends Nullstack<Props> {
   }
 
   async changeDevice() {
+    if (!this.mic && !this.webcam) {
+      return
+    }
+
     const stream = await navigator.mediaDevices.getUserMedia({
       audio: !!this.mic
         ? {
@@ -151,7 +155,11 @@ export class Home extends Nullstack<Props> {
 
               <div class="flex justify-center pt-4">
                 {!this.recordingState && (
-                  <button class="rounded-md dark:bg-blue-500 dark:text-white py-2 px-4" onclick={this.startRecording}>
+                  <button
+                    class="rounded-md dark:bg-blue-500 dark:text-white py-2 px-4"
+                    onclick={this.startRecording}
+                    disabled={!this.mic && !this.webcam}
+                  >
                     Start recording
                   </button>
                 )}
