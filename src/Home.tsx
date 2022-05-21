@@ -164,7 +164,7 @@ export class Home extends Nullstack<Props> {
                   <button
                     class="rounded-md dark:bg-blue-500 dark:text-white py-2 px-4"
                     onclick={this.startRecording}
-                    disabled={!this.mic && !this.webcam}
+                    disabled={this.mic === 'false' && this.webcam === 'false'}
                   >
                     Start recording
                   </button>
