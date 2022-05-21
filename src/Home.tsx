@@ -24,6 +24,8 @@ export class Home extends Nullstack<Props> {
   }
 
   async hydrate() {
+    await navigator.mediaDevices.getUserMedia({ audio: true, video: true })
+
     this._devices = await navigator.mediaDevices.enumerateDevices()
     this.mic = this._devices.find((device) => device.kind === 'audioinput')?.deviceId
     this.webcam = this._devices.find((device) => device.kind === 'videoinput')?.deviceId
