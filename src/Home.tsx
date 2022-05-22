@@ -188,7 +188,7 @@ export class Home extends Nullstack<Props> {
 
               <div class="flex flex-col flex-1">
                 <div id="video-container">
-                  <video id="video" class={`w-full ${this.webcam === 'false' ? '' : 'h-16'}`} controls autoplay muted />
+                  <video id="video" class={`w-full ${this.webcam !== 'false' ? '' : 'h-16'}`} controls autoplay muted />
                 </div>
               </div>
             </div>
