@@ -7,7 +7,7 @@
   "devDependencies": {
     "@types/luxon": "^2.3.2",
     "concurrently": "^7.1.0",
-    "nullstack": "^0.15.9",
+    "nullstack": "github:brunolm/nullstack.git#typescript-jsx",
     "tailwindcss": "^3.0.24"
   },
   "scripts": {

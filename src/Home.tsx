@@ -1,11 +1,12 @@
 import { DateTime } from 'luxon'
-import Nullstack, { NullstackClientContext } from 'nullstack'
+import Nullstack, { NullstackClientContext, NullstackNode } from 'nullstack'
+
 import { RelativeTime } from './shared/RelativeTime'
 
 interface Props extends NullstackClientContext {}
 
-declare function DeviceSelector(): typeof Home.prototype.renderDeviceSelector
-declare function Recordings(): typeof Home.prototype.renderRecordings
+declare function DeviceSelector(): NullstackNode
+declare function Recordings(): NullstackNode
 
 export class Home extends Nullstack<Props> {
   _devices: MediaDeviceInfo[] = []
@@ -143,6 +144,9 @@ export class Home extends Nullstack<Props> {
             <div class="flex flex-col gap-2 items-center w-full">
               <video src={rec.url} controls />
               <RelativeTime date={rec.date} />
+              <a href={rec.url} download>
+                Download
+              </a>
             </div>
           ))}
         </div>
