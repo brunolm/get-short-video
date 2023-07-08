@@ -1,14 +1,14 @@
 import { DateTime } from 'luxon'
 import Nullstack, { NullstackClientContext } from 'nullstack'
 
-interface Props extends NullstackClientContext {
+interface Props {
   date: DateTime
 }
 
 export class RelativeTime extends Nullstack<Props> {
   force = 0
 
-  hydrate({ environment, date }: Props) {
+  hydrate({ environment, date }: NullstackClientContext<Props>) {
     if (environment.client) {
       setInterval(() => {
         this.force ^= 1

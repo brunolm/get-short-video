@@ -3,7 +3,7 @@ import Nullstack, { NullstackClientContext, NullstackNode } from 'nullstack'
 
 import { RelativeTime } from './shared/RelativeTime'
 
-interface Props extends NullstackClientContext {}
+interface Props {}
 
 declare function DeviceSelector(): NullstackNode
 declare function Recordings(): NullstackNode
@@ -19,7 +19,7 @@ export class Home extends Nullstack<Props> {
 
   recordingState = false
 
-  prepare({ page }: Props) {
+  prepare({ page }: NullstackClientContext) {
     page.title = `Get Short Video`
     page.description = `Get a short video`
   }
@@ -154,7 +154,7 @@ export class Home extends Nullstack<Props> {
     )
   }
 
-  render({ project }: Props) {
+  render({ project }: NullstackClientContext) {
     return (
       <section class="Home">
         <article class="flex flex-col py-8">
@@ -194,13 +194,6 @@ export class Home extends Nullstack<Props> {
             </div>
 
             <Recordings />
-          </div>
-
-          <div class="flex justify-center">
-            Made with ❤ by{' '}
-            <a href="https://ae.studio" class="pl-1 underline">
-              AE Studio
-            </a>
           </div>
         </article>
       </section>

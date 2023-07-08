@@ -1,7 +1,12 @@
 module.exports = {
-  content: ['./src/**/*.{html,js,jsx,ts,tsx}'],
+  content: ['./src/**/*.njs', './src/**/*.jsx', './src/**/*.nts', './src/**/*.tsx'],
   theme: {
     extend: {},
+    fontFamily: {
+      roboto: ['Roboto', 'sans-serif'],
+      'crete-round': ['Crete Round', 'sans-serif'],
+      sora: ['Sora', 'sans-serif'],
+    },
   },
   plugins: [],
 }

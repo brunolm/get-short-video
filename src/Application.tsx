@@ -1,9 +1,9 @@
-import Nullstack, { NullstackClientContext } from 'nullstack'
+import Nullstack, { NullstackClientContext, NullstackNode } from 'nullstack'
+import '../tailwind.css'
 import './Application.css'
 import { Home } from './Home'
-import './tailwind.css'
 
-declare function Head(): typeof Application.prototype.renderHead
+declare function Head(): NullstackNode
 
 class Application extends Nullstack {
   prepare({ page }: NullstackClientContext) {
