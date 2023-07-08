@@ -5,7 +5,7 @@ self.context = {
     "development": false,
     "production": true,
     "mode": "ssg",
-    "key": "fb24b4eb8c174fe64efb901cb6b0a1e536e85b8e",
+    "key": "f76afd7860b43f80c24819a20c5a18c3f725aa25",
     "name": ""
   },
   "project": {
@@ -38,6 +38,8 @@ self.context = {
     "enabled": true,
     "fetching": false,
     "preload": [],
+    "staleWhileRevalidate": [],
+    "cacheFirst": [],
     "headers": {},
     "api": "",
     "cdn": "",
@@ -49,12 +51,20 @@ self.context = {
 async function load(event) {
     const response = await event.preloadResponse;
     if (response) return response;
-    return await fetch(event.request);
+    return fetch(event.request);
+}
+
+
+function match(serializedMatcher, url) {
+    const matcher = JSON.parse(serializedMatcher);
+    return new RegExp(matcher.source, matcher.flags).test(url.href);
 }
 
 
 function withAPI(url) {
-    let [path, query] = url.split("?");
+    const fragments = url.split("?");
+    let path = fragments[0];
+    const query = fragments[1];
     if (path.includes(".")) return url;
     path += "/index.json";
     return query ? [
@@ -68,8 +78,7 @@ function withAPI(url) {
 async function extractData(response) {
     const html = await response.clone().text();
     const stateLookup = '<meta name="nullstack" content="';
-    const state = html.split("\n").find((line)=>line.indexOf(stateLookup) > -1
-    ).split(stateLookup)[1].slice(0, -2);
+    const state = html.split("\n").find((line)=>line.indexOf(stateLookup) > -1).split(stateLookup)[1].slice(0, -2);
     const { instances , page  } = JSON.parse(decodeURIComponent(state));
     const json = JSON.stringify({
         instances,
@@ -112,7 +121,7 @@ async function networkFirst(event) {
         await cache.put(event.request, networkResponse.clone());
         return networkResponse;
     } catch (error) {
-        return await cache.match(event.request);
+        return cache.match(event.request);
     }
 }
 
@@ -120,7 +129,7 @@ async function networkFirst(event) {
 async function networkDataFirst(event) {
     const cache = await caches.open(self.context.environment.key);
     const url = new URL(event.request.url);
-    const api = url.pathname + "/index.json";
+    const api = `${url.pathname}/index.json`;
     try {
         const response = await load(event);
         const dataResponse = await extractData(response);
@@ -128,7 +137,7 @@ async function networkDataFirst(event) {
         return response;
     } catch (error) {
         const cachedDataResponse = await cache.match(url);
-        return cachedDataResponse || await cache.match(`/nullstack/${self.context.environment.key}/offline/index.html`);
+        return cachedDataResponse || cache.match(`/nullstack/${self.context.environment.key}/offline/index.html`);
     }
 }
 
@@ -160,11 +169,9 @@ self.addEventListener("install", install);
 function activate(event) {
     event.waitUntil(async function() {
         const cacheNames = await caches.keys();
-        const cachesToDelete = cacheNames.filter((cacheName)=>cacheName !== self.context.environment.key
-        );
-        await Promise.all(cachesToDelete.map((cacheName)=>caches.delete(cacheName)
-        ));
-        if (self.registration.navigationPreload) {
+        const cachesToDelete = cacheNames.filter((cacheName)=>cacheName !== self.context.environment.key);
+        await Promise.all(cachesToDelete.map((cacheName)=>caches.delete(cacheName)));
+        if ("navigationPreload" in self.registration) {
             await self.registration.navigationPreload.enable();
         }
         self.clients.claim();
@@ -175,13 +182,23 @@ self.addEventListener("activate", activate);
 
 function staticStrategy(event) {
     event.waitUntil(async function() {
-        const url = new URL(event.request.url);
-        if (url.origin !== location.origin) return;
         if (event.request.method !== "GET") return;
+        const url = new URL(event.request.url);
+        for (const matcher of self.context.worker.staleWhileRevalidate){
+            if (match(matcher, url)) {
+                return event.respondWith(staleWhileRevalidate(event));
+            }
+        }
+        for (const matcher of self.context.worker.cacheFirst){
+            if (match(matcher, url)) {
+                return event.respondWith(cacheFirst(event));
+            }
+        }
+        if (url.origin !== location.origin) return;
         if (url.pathname.indexOf("/nullstack/") > -1) {
             return event.respondWith(networkFirst(event));
         }
-        if (url.pathname.indexOf(self.context.environment.key) > -1) {
+        if (url.searchParams?.get("fingerprint") === self.context.environment.key) {
             return event.respondWith(cacheFirst(event));
         }
         if (url.pathname.indexOf(".") > -1) {

@@ -1,1 +1,1 @@
-{"instances":{"application":{},"Home/0-0-1-0-0/":{"recordingState":false}},"page":{"image":"/image-1200x630.png","status":200,"locale":"en-US","title":"Get Short Video","description":"Get a short video"}}
+{"instances":{"application":{"persistent":false},"Home/0-0-1-0-0/":{"_devices":[],"_dataChunks":[],"_recordings":[],"recordingState":false,"persistent":false}},"page":{"image":"/image-1200x630.png","status":200,"locale":"en-US","title":"Get Short Video","description":"Get a short video"}}
