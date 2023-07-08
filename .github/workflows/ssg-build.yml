@@ -28,7 +28,7 @@ jobs:
           NULLSTACK_PROJECT_NAME: 'Get a Short Video'
           NULLSTACK_PROJECT_DOMAIN: 'getshortvideo.com'
           NULLSTACK_PROJECT_COLOR: '#333333'
-        run: yarn build --cache
+        run: yarn build
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4.3.3

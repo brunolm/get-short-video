@@ -1,4 +1,4 @@
-import { DateTime } from 'luxon'
+import { DateTime, Duration } from 'luxon'
 import Nullstack, { NullstackClientContext, NullstackNode } from 'nullstack'
 
 import { RelativeTime } from './shared/RelativeTime'
@@ -12,12 +12,13 @@ export class Home extends Nullstack<Props> {
   _devices: MediaDeviceInfo[] = []
   _mediaRecorder: MediaRecorder
   _dataChunks: Blob[] = []
-  _recordings: Array<{ date: DateTime; url: string }> = []
+  _recordings: Array<{ date: DateTime; url: string; elapsed: number }> = []
 
   mic: string
   webcam: string
 
   recordingState = false
+  startedAt: DateTime = null
 
   prepare({ page }: NullstackClientContext) {
     page.title = `Get Short Video`
@@ -43,6 +44,7 @@ export class Home extends Nullstack<Props> {
 
   async startRecording() {
     this.recordingState = true
+    this.startedAt = DateTime.now()
     this._dataChunks = []
 
     this._mediaRecorder.start()
@@ -101,6 +103,7 @@ export class Home extends Nullstack<Props> {
     this._recordings.unshift({
       date: DateTime.now(),
       url: dataUrl,
+      elapsed: DateTime.now().diff(this.startedAt, 'milliseconds').milliseconds,
     })
   }
 
@@ -136,16 +139,18 @@ export class Home extends Nullstack<Props> {
     }
 
     return (
-      <div class="flex flex-col gap-2 mt-12 sm:mt-4">
-        <h2>Past recordings</h2>
+      <div class="flex flex-col gap-2 mt-12 sm:mt-4 border-t-2 border-t-slate-500">
+        <h2 class="text-xl mt-4">Past recordings</h2>
 
         <div class="grid-cols-1 sm:grid-cols-2 md:grid-cols-3 grid gap-4">
           {this._recordings?.map((rec) => (
             <div class="flex flex-col gap-2 items-center w-full">
               <video src={rec.url} controls />
               <RelativeTime date={rec.date} />
-              <a href={rec.url} download>
-                Download
+
+              <a href={rec.url} download class="border border-blue-500 rounded-md py-2 px-4">
+                Download{' '}
+                <span class="text-sm text-slate-400">({Duration.fromMillis(rec.elapsed).toFormat('mm:ss')})</span>
               </a>
             </div>
           ))}

@@ -17,6 +17,10 @@ export class RelativeTime extends Nullstack<Props> {
   }
 
   render({ date }: Props) {
-    return <span data-refresh={`rt-${this.force}`}>{date.toRelative()}</span>
+    return (
+      <span data-refresh={`rt-${this.force}`} class="text-sm">
+        {date.toRelative()}
+      </span>
+    )
   }
 }
